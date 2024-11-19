@@ -46,6 +46,7 @@ class Planeta {
   method esHabitanteDelPlaneta(habitante) = habitantes.contains(habitante)
 
   method agregarConstruccion(nuevaConstruccion) {construcciones.add(nuevaConstruccion)}
+  method cantidadConstrucciones() = construcciones.size()
 
   // que está formada por todos los habitantes destacados y el habitante que tenga más recursos.
   // con add, agrego el habitante con mas recursos al final
@@ -130,7 +131,7 @@ class Productor inherits Persona {
 }
 
 class Constructor inherits Persona {
-  var cantConstruccionesRealizadas 
+  var property cantConstruccionesRealizadas 
   const regionDondeVive
   const property inteligencia 
 
@@ -156,7 +157,7 @@ object costa {
 }
 
 object llanura {
-  method construccionAConstruir(tiempo, persona, recursos) = 
+  method construccionAConstruirPorRegion(tiempo, persona, recursos) = 
     if(!persona.esDestacada()) {
       new Muralla(longitud = tiempo / 2)
     }else{ 

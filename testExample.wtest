@@ -38,7 +38,7 @@ describe "Tests de planetas" {
   }
 }
 
-describe "Tests de nuevas personas" {
+describe "Tests de nuevas personas (productores y constructores)" {
   
   const ezeGrande = new Productor(edad = 22)
   const david = new Productor(edad = 50)
@@ -56,5 +56,41 @@ describe "Tests de nuevas personas" {
   test "El productor NO puede trabajar en una tierra que no es habitante" {
     assert.throwsException({david.trabajar(10, tierraVacia)}) // Chequea que es una excepcion, pero sigue ejecutando la linea de codigo siguiente 
     assert.equals(20, david.monedas())  // no gano monedas :(
+  }
+
+  test "El constructor de la montaña trabaja en al tierraVacia y construye en ella una muralla" {
+    cacho.trabajar(10, tierraVacia)
+    assert.equals(15, cacho.monedas())
+    assert.that(tierraVacia.cantidadConstrucciones() > 0)
+    assert.equals(11, cacho.cantConstruccionesRealizadas())
+  }
+
+  test "El constructor de la costa trabaja en al tierraVacia y construye en ella una muralla porque no es una persona destacada" {
+    luis.trabajar(10, tierraVacia)
+    assert.equals(15, luis.monedas())
+    assert.that(tierraVacia.cantidadConstrucciones() > 0)
+    assert.equals(6, luis.cantConstruccionesRealizadas())
+  }
+
+  test "El constructor de la llanura trabaja en al tierraVacia y construye en ella una museo" {
+    ricki.trabajar(10, tierraVacia)
+    assert.equals(15, ricki.monedas())
+    assert.that(tierraVacia.cantidadConstrucciones() > 0)
+    assert.equals(3, ricki.cantConstruccionesRealizadas())
+  }
+}
+
+describe "Test de formar parte de la delegacion de su planeta" {
+  const ezeGrande2 = new Productor(edad = 22)
+
+  const tierraVacia = new Planeta(habitantes = [ezeGrande2], construcciones = [])
+
+  test "Si el productor aprende 4 nuevas tecnicas, sera un persona destacada y formara parte de la delegación diplomática de su planeta" {
+    ezeGrande2.aprenderUnaTecnica("cocina")
+    ezeGrande2.aprenderUnaTecnica("orden")
+    ezeGrande2.aprenderUnaTecnica("costura")
+    ezeGrande2.aprenderUnaTecnica("limpieza")
+    assert.that(ezeGrande2.esDestacada())
+    assert.equals([ezeGrande2],tierraVacia.delegacionDiplomatica())
   }
 }
