@@ -1,9 +1,60 @@
-import example.pepita
+import example.*
 
-describe "group of tests for pepita" {
+describe "Tests de planetas" {
+  const eze = new Persona(edad = 22)
+  const aure = new Persona(edad = 64, monedas = 21)
+  const marce = new Persona(edad = 55, monedas = 22) 
+  const pepe = new Persona(edad = 10)
+  
+  const muralla1 = new Muralla(longitud = 10)
+  const muralla2 = new Muralla(longitud = 20)
+  const museo1 = new Museo(superficieCubierta = 10, indiceImportancia = 1)
+  const muralla3 = new Muralla(longitud = 5)
+  const muralla4 = new Muralla(longitud = 4)
 
-  test "pepita has initial energy" {
-    assert.equals(100, pepita.energy())
+  const tierra = new Planeta(habitantes = [eze, aure, marce, pepe], construcciones = [muralla1, muralla2, museo1])
+  const planetaNoValioso = new Planeta(habitantes = [eze, aure, marce, pepe], construcciones = [muralla3, muralla4])
+
+  test "La delegacion diplomatica de la tierra esta formada por 3 personas de los 4 habitantes" {
+    assert.equals([eze,aure,marce], tierra.delegacionDiplomatica())
+    assert.equals(3, tierra.cantidadDelegacionDiplomatica())
+    
   }
 
+  test "La tierra es valiosa" {
+    assert.that(tierra.esValioso())
+  }
+
+  test "El planetaNoValioso NO es valioso" {
+    assert.notThat(planetaNoValioso.esValioso())
+  }
+
+  test "Si pepe gana alguna moneda, por ejemplo 5, entonces la delegacion diplomatica de la tierra estara formada por 4 personas" {
+    pepe.ganarMonedas(5)
+    assert.equals(25, pepe.recursos())
+    assert.that(tierra.esElHabitanteConMasRecursos(pepe))
+    assert.equals(4, tierra.cantidadDelegacionDiplomatica())
+    assert.equals([eze,aure,marce, pepe], tierra.delegacionDiplomatica())
+  }
+}
+
+describe "Tests de nuevas personas" {
+  
+  const ezeGrande = new Productor(edad = 22)
+  const david = new Productor(edad = 50)
+  const cacho = new Constructor(edad = 40, cantConstruccionesRealizadas = 10, regionDondeVive = montana, inteligencia = 101)
+  const luis = new Constructor(edad = 35, cantConstruccionesRealizadas = 5, regionDondeVive = costa, inteligencia = 102)
+  const ricki = new Constructor(edad = 30, cantConstruccionesRealizadas = 2, regionDondeVive = llanura, inteligencia = 99)
+
+  const tierraVacia = new Planeta(habitantes = [ezeGrande], construcciones = [])
+
+  test "El productor trabaja en la tierra que es habitante, como recompensa obtiene monedas" {
+    ezeGrande.trabajar(10, tierraVacia)
+    assert.equals(50, ezeGrande.monedas())
+  }
+
+  test "El productor NO puede trabajar en una tierra que no es habitante" {
+    assert.throwsException({david.trabajar(10, tierraVacia)}) // Chequea que es una excepcion, pero sigue ejecutando la linea de codigo siguiente 
+    assert.equals(20, david.monedas())  // no gano monedas :(
+  }
 }
